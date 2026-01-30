@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Utilisateurs</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center"><i class="fas fa-users"></i> Liste des Utilisateurs</h1>
+        <a href="/users/add" class="btn btn-success mb-3"><i class="fas fa-user-plus"></i> Ajouter un utilisateur</a>
+        <a href="/media/" class="btn btn-secondary mb-3"><i class="fas fa-home"></i> Retour à l'accueil</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nom d'utilisateur</th>
+                    <th>Email</th>
+                    <th>Rôle</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="user : ${users}">
+                    <td th:text="${user.id}"></td>
+                    <td th:text="${user.username}"></td>
+                    <td th:text="${user.email}"></td>
+                    <td>
+                        <span th:each="role, iterStat : ${user.roles}">
+                            <span th:if="${role.name.name() == 'ROLE_ADMIN'}">
+                                <i class="fas fa-shield-alt" style="color:#dc3545;margin-right:6px" title="Administrateur"></i>
+                                <span>Administrateur</span>
+                            </span>
+                            <span th:if="${role.name.name() == 'ROLE_USER'}">
+                                <i class="fas fa-glasses" style="color:#28a745;margin-right:6px" title="Lecteur"></i>
+                                <span>Lecteur</span>
+                            </span>
+                            <span th:if="${!iterStat.last}">, </span>
+                        </span>
+                    </td>
+                    <td>
+                        <a href="#" th:href="@{/users/delete/{id}(id=${user.id})}" class="btn btn-danger"><i class="fas fa-trash"></i> Supprimer</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

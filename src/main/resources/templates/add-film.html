@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un Film</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Ajouter un Film</h1>
+        <form th:action="@{/media/films/save}" th:object="${film}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="titre">Titre</label>
+                <input type="text" class="form-control" id="titre" th:field="*{titre}" required>
+            </div>
+            <div class="form-group">
+                <label for="realisateur">Réalisateur</label>
+                <input type="text" class="form-control" id="realisateur" th:field="*{realisateur}" required>
+            </div>
+            <div class="form-group">
+                <label for="format">Format</label>
+                <input type="text" class="form-control" id="format" th:field="*{format}" required>
+            </div>
+            <div class="form-group">
+                <label for="annee">Année</label>
+                <input type="number" class="form-control" id="annee" th:field="*{annee}" required>
+            </div>
+            <div class="form-group">
+                <label for="genre">Genre</label>
+                <input type="text" class="form-control" id="genre" th:field="*{genre}" required>
+            </div>
+            <div class="form-group">
+                <label for="file"><i class="fas fa-image"></i> Illustration</label>
+                <input type="file" class="form-control" id="file" name="file">
+            </div>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+            <a href="/media/films" class="btn btn-secondary">Annuler</a>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function(){
+            const form = document.querySelector('form[th\\:action="@{/media/films/save}"]') || document.querySelector('form[action="/media/films/save"]');
+            const fileInput = document.getElementById('file');
+            if (form && fileInput) {
+                form.addEventListener('submit', function(e){
+                    const file = fileInput.files[0];
+                    if (file) {
+                        const allowed = ['image/jpeg','image/png','image/gif','image/webp'];
+                        const maxBytes = 2 * 1024 * 1024;
+                        if (file.size > maxBytes) {
+                            e.preventDefault();
+                            alert('Le fichier est trop volumineux (max 2MB).');
+                            return false;
+                        }
+                        if (!allowed.includes(file.type)) {
+                            e.preventDefault();
+                            alert('Type de fichier non autorisé. Utilisez JPG, PNG, GIF ou WEBP.');
+                            return false;
+                        }
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

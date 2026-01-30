@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="text-center"><i class="fas fa-user"></i> Profil</h1>
+                    </div>
+                    <div class="card-body">
+                        <div th:if="${error}" class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> <span th:text="${error}"></span>
+                        </div>
+                        <div th:if="${success}" class="alert alert-success">
+                            <i class="fas fa-check-circle"></i> <span th:text="${success}"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="username"><i class="fas fa-user"></i> Nom d'utilisateur</label>
+                            <input type="text" class="form-control" id="username" th:value="${user.username}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="email"><i class="fas fa-envelope"></i> Email</label>
+                            <input type="email" class="form-control" id="email" th:value="${user.email}" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="roles"><i class="fas fa-tags"></i> Rôles</label>
+                            <div class="form-control" id="roles" readonly>
+                                <span th:each="role, iterStat : ${user.roles}">
+                                    <span th:if="${role.name.name() == 'ROLE_ADMIN'}">
+                                        <i class="fas fa-shield-alt" style="color:#dc3545;margin-right:6px" title="Administrateur"></i>
+                                        <span>Administrateur</span>
+                                    </span>
+                                    <span th:if="${role.name.name() == 'ROLE_USER'}">
+                                        <i class="fas fa-glasses" style="color:#28a745;margin-right:6px" title="Lecteur"></i>
+                                        <span>Lecteur</span>
+                                    </span>
+                                    <span th:if="${!iterStat.last}">, </span>
+                                </span>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#changePasswordModal">
+                            <i class="fas fa-lock"></i> Changer le mot de passe
+                        </button>
+                        <a href="/media/" class="btn btn-secondary"><i class="fas fa-home"></i> Retour à l'accueil</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal pour changer le mot de passe -->
+    <div class="modal fade" id="changePasswordModal" tabindex="-1" role="dialog" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="changePasswordModalLabel"><i class="fas fa-lock"></i> Changer le mot de passe</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form th:action="@{/users/change-password}" method="post">
+                        <div class="form-group">
+                            <label for="currentPassword"><i class="fas fa-lock"></i> Mot de passe actuel</label>
+                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword"><i class="fas fa-lock"></i> Nouveau mot de passe</label>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword"><i class="fas fa-lock"></i> Confirmer le nouveau mot de passe</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Enregistrer</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

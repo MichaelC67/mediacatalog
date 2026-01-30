@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Éditer un Film</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center"><i class="fas fa-film"></i> Éditer un Film</h1>
+        <form th:action="@{/media/films/update}" th:object="${film}" method="post" enctype="multipart/form-data">
+            <input type="hidden" th:field="*{id}">
+            <div class="form-group">
+                <label for="titre"><i class="fas fa-heading"></i> Titre</label>
+                <input type="text" class="form-control" id="titre" th:field="*{titre}" required>
+            </div>
+            <div class="form-group">
+                <label for="realisateur"><i class="fas fa-user"></i> Réalisateur</label>
+                <input type="text" class="form-control" id="realisateur" th:field="*{realisateur}">
+            </div>
+            <div class="form-group">
+                <label for="format"><i class="fas fa-film"></i> Format</label>
+                <input type="text" class="form-control" id="format" th:field="*{format}">
+            </div>
+            <div class="form-group">
+                <label for="annee"><i class="fas fa-calendar"></i> Année</label>
+                <input type="number" class="form-control" id="annee" th:field="*{annee}">
+            </div>
+            <div class="form-group">
+                <label for="genre"><i class="fas fa-tags"></i> Genre</label>
+                <input type="text" class="form-control" id="genre" th:field="*{genre}">
+            </div>
+            <div class="form-group">
+                <label for="file"><i class="fas fa-image"></i> Nouvelle illustration</label>
+                <input type="file" class="form-control" id="file" name="file">
+                <small class="form-text text-muted">Laissez vide pour conserver l'illustration actuelle.</small>
+            </div>
+            <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Mettre à jour</button>
+            <a href="/media/films" class="btn btn-secondary"><i class="fas fa-times"></i> Annuler</a>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        (function(){
+            const form = document.querySelector('form[th\:action="@{/media/films/update}"]') || document.querySelector('form[action="/media/films/update"]');
+            const fileInput = document.getElementById('file');
+            if (form && fileInput) {
+                form.addEventListener('submit', function(e){
+                    const file = fileInput.files[0];
+                    if (file) {
+                        const allowed = ['image/jpeg','image/png','image/gif','image/webp'];
+                        const maxBytes = 2 * 1024 * 1024;
+                        if (file.size > maxBytes) {
+                            e.preventDefault();
+                            alert('Le fichier est trop volumineux (max 2MB).');
+                            return false;
+                        }
+                        if (!allowed.includes(file.type)) {
+                            e.preventDefault();
+                            alert('Type de fichier non autorisé. Utilisez JPG, PNG, GIF ou WEBP.');
+                            return false;
+                        }
+                    }
+                });
+            }
+        })();
+    </script>
+</body>
+</html>

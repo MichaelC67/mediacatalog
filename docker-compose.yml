@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mediacatalog:
+    image: michaelc67/mediacatalog:latest
+    container_name: mediacatalog
+    ports:
+      - "8080:8080"
+    volumes:
+      # Données persistantes
+      - ./uploads:/data/uploads
+      - ./data:/data/db
+    environment:
+      - APP_UPLOAD_DIR=/data/uploads
+      - DB_DIR=/data/db
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:/data/db/mediacatalogdb;AUTO_SERVER=TRUE
+    restart: unless-stopped

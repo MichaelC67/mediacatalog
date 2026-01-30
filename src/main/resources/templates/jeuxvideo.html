@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Jeux Vidéo</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .thumb-wrapper { position: relative; display: inline-block; }
+        .thumb { width: 48px; height: 48px; object-fit: cover; border-radius: 4px; }
+        .thumb-large { display: none; position: absolute; left: 56px; top: -10px; z-index: 1000; border: 1px solid #ccc; background: #fff; padding: 6px; }
+        .thumb-wrapper:hover .thumb-large { display: block; }
+        .thumb-large img { max-width: 360px; max-height: 360px; display: block; }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Liste des Jeux Vidéo</h1>
+        <a href="/media/jeuxvideo/add" class="btn btn-success mb-3">Ajouter un jeu vidéo</a>
+        <a href="/media/" class="btn btn-secondary mb-3">Retour à l'accueil</a>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Éditeur</th>
+                    <th>Plateforme</th>
+                    <th>Année</th>
+                    <th>Genre</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="jeuvideo : ${jeuxvideo}">
+                    <td>
+                        <span th:if="${jeuvideo.illustrationPath != null}" class="thumb-wrapper">
+                            <img th:src="${jeuvideo.illustrationPath}" alt="thumb" class="thumb"/>
+                            <span class="thumb-large"><img th:src="${jeuvideo.illustrationPath}" alt="preview"/></span>
+                        </span>
+                        <span th:if="${jeuvideo.illustrationPath == null}">
+                            <i class="fas fa-gamepad" style="font-size:20px;color:#6c757d"></i>
+                        </span>
+                    </td>
+                    <td th:text="${jeuvideo.id}"></td>
+                    <td th:text="${jeuvideo.titre}"></td>
+                    <td th:text="${jeuvideo.editeur}"></td>
+                    <td th:text="${jeuvideo.plateforme}"></td>
+                    <td th:text="${jeuvideo.annee}"></td>
+                    <td th:text="${jeuvideo.genre}"></td>
+                    <td>
+                        <a href="#" th:href="@{/media/jeuxvideo/edit/{id}(id=${jeuvideo.id})}" class="btn btn-primary btn-sm"><i class="fas fa-edit"></i> Éditer</a>
+                        <a href="#" th:href="@{/media/jeuxvideo/delete/{id}(id=${jeuvideo.id})}" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Supprimer</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
