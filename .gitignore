@@ -6,6 +6,9 @@ target/
 uploads/
 data/
 
+### macOS ###
+.DS_Store
+
 ### STS ###
 .apt_generated
 .classpath
